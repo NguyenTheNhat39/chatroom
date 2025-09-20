@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room - Tạo phòng chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-card">
+            <div class="app-icon">💬</div>
+            <h1>Chat Room</h1>
+            <p>Chào mừng bạn đến với ứng dụng chat real-time!</p>
+            
+            <div class="form-group">
+                <label for="nickname">Nickname của bạn:</label>
+                <input type="text" id="nickname" placeholder="Nhập nickname..." maxlength="20" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="roomId">Mã phòng chat:</label>
+                <input type="text" id="roomId" placeholder="Nhập mã phòng hoặc để trống để tạo phòng mới" maxlength="20">
+                <small>Để trống để tạo phòng mới</small>
+            </div>
+            
+            <button id="joinBtn" class="join-btn">Tham gia phòng chat</button>
+            
+            <div class="features">
+                <h3>✨ Tính năng:</h3>
+                <ul>
+                    <li>Chat real-time tức thì</li>
+                    <li>Không cần đăng ký phức tạp</li>
+                    <li>Mỗi phòng chat riêng biệt</li>
+                    <li>Hiển thị số người online</li>
+                    <li>Giao diện thân thiện</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('joinBtn').addEventListener('click', function() {
+            const nickname = document.getElementById('nickname').value.trim();
+            const roomId = document.getElementById('roomId').value.trim();
+            
+            if (!nickname) {
+                alert('Vui lòng nhập nickname!');
+                return;
+            }
+            
+            // Generate room ID if not provided
+            const finalRoomId = roomId || generateRoomId();
+            
+            // Store nickname in sessionStorage
+            sessionStorage.setItem('nickname', nickname);
+            
+            // Redirect to room
+            window.location.href = `/room/${finalRoomId}`;
+        });
+        
+        // Generate random room ID
+        function generateRoomId() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+        
+        // Enter key support
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('joinBtn').click();
+            }
+        });
+        
+        // Load saved nickname
+        const savedNickname = sessionStorage.getItem('nickname');
+        if (savedNickname) {
+            document.getElementById('nickname').value = savedNickname;
+        }
+    </script>
+</body>
+</html>
